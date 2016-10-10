@@ -209,6 +209,23 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
                 'master-image.jpg',
                 self.group.master_image_for_viewport('desktop').__name__)
 
+    def test_device_pixel_ratio_of_two_doubles_image_size(self):
+        self.assertEqual(
+            (600, 320), self.group['cinema__300x160__2x'].getImageSize())
+
+
+    def test_scaled_image_get_zoom_from_non_scaled_size(self):
+        self.group.variants = {
+            'cinema-small': {'zoom': 0.3, 'max_size': '300x160'},
+            'cinema-large': {'zoom': 1.0, 'max_size': '600x320'}
+        }
+        self.assertEqual(
+            0.3, self.group.get_variant_by_size('cinema__300x160__2x').zoom)
+        self.assertEqual(
+            0.3, self.group.get_variant_by_size('cinema__300x160').zoom)
+        self.assertEqual(
+            1.0, self.group.get_variant_by_size('cinema__600x320').zoom)
+
 
 class ThumbnailsTest(zeit.cms.testing.FunctionalTestCase):
 
