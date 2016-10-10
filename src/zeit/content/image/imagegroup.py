@@ -192,6 +192,17 @@ class ImageGroupBase(object):
     def get_variant_viewport(self, key):
         return get_viewport_from_key(key)
 
+    def get_scale(self, key):
+        """If key contains `2x`, retrieve 2 else None"""
+        for segment in key.split('__')[1:]:
+            seg = segment.split('x')
+            if len(seg) is 2 and not seg[1]:
+                try:
+                    return float(seg[0])
+                except ValueError:
+                    continue
+        return None
+
     def get_variant_by_key(self, key):
         """Retrieve Variant by using as much information as given in key."""
         variant = self.get_variant_by_size(key)
