@@ -209,10 +209,19 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
                 'master-image.jpg',
                 self.group.master_image_for_viewport('desktop').__name__)
 
-    def test_device_pixel_ratio_of_two_doubles_image_size(self):
+    def test_device_pixel_ratio_affects_image_size(self):
         self.assertEqual(
             (600, 320), self.group['cinema__300x160__2x'].getImageSize())
+        self.assertEqual(
+            (180, 96), self.group['cinema__300x160__0.6x'].getImageSize())
+        self.assertEqual(
+            (675, 360), self.group['cinema__300x160__2.25x'].getImageSize())
 
+    def test_unallowed_device_pixel_ratio_is_ignored(self):
+        self.assertEqual(
+            (300, 160), self.group['cinema__300x160__0.2x'].getImageSize())
+        self.assertEqual(
+            (300, 160), self.group['cinema__300x160__99999x'].getImageSize())
 
     def test_scaled_image_get_zoom_from_non_scaled_size(self):
         self.group.variants = {
