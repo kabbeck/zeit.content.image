@@ -113,9 +113,10 @@ class ImageGroupBase(object):
         size = self.get_variant_size(key)
         fill = self.get_variant_fill(key)
         viewport = self.get_variant_viewport(key)
+        scale = self.get_scale(key)
 
         # Make sure no invalid or redundant modifiers were provided
-        values = [variant.name, size, fill, viewport]
+        values = [variant.name, size, fill, viewport, scale]
         if len([x for x in values if x]) != len(key.split('__')):
             raise KeyError(key)
 
