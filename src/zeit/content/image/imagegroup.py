@@ -1,3 +1,4 @@
+from math import ceil
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.interfaces import IMAGE_NAMESPACE, VIEWPORT_SOURCE
 import PIL.ImageColor
@@ -152,6 +153,9 @@ class ImageGroupBase(object):
                 size = variant.legacy_size
             elif variant.max_width < sys.maxint > variant.max_height:
                 size = [variant.max_width, variant.max_height]
+
+        if scale and size and (0.5 <= scale <= 3.0):
+            size = [int(ceil(x * scale)) for x in size]
 
         # Be defensive about missing meta files, so source could not be
         # recognized as an image (for zeit.web)
