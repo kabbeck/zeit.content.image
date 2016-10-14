@@ -199,7 +199,10 @@ class ImageGroupBase(object):
         return get_viewport_from_key(key)
 
     def get_scale(self, key):
-        """If key contains `2x`, retrieve 2 else None"""
+        """If key contains `scale_2.0` the function returns a scale of 2.0.
+        If it is not possible to evaluate a scale because the key does not
+        contain a scale, or the format is not valid, `None` is returned.
+        """
         for segment in key.split('__')[1:]:
             seg = segment.split('scale_')
             try:
