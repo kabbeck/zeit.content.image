@@ -200,12 +200,11 @@ class ImageGroupBase(object):
     def get_scale(self, key):
         """If key contains `2x`, retrieve 2 else None"""
         for segment in key.split('__')[1:]:
-            seg = segment.split('x')
-            if len(seg) is 2 and not seg[1]:
-                try:
-                    return float(seg[0])
-                except ValueError:
-                    continue
+            seg = segment.split('scale_')
+            try:
+                return float(seg[1])
+            except (IndexError, ValueError):
+                continue
         return None
 
     def get_variant_by_key(self, key):

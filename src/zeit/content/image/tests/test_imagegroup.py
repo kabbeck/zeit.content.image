@@ -211,17 +211,17 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_device_pixel_ratio_affects_image_size(self):
         self.assertEqual(
-            (600, 320), self.group['cinema__300x160__2x'].getImageSize())
+            (600, 320), self.group['cinema__300x160__scale_2.0'].getImageSize())
         self.assertEqual(
-            (180, 96), self.group['cinema__300x160__0.6x'].getImageSize())
+            (180, 96), self.group['cinema__300x160__scale_0.6'].getImageSize())
         self.assertEqual(
-            (675, 360), self.group['cinema__300x160__2.25x'].getImageSize())
+            (675, 360), self.group['cinema__300x160__scale_2.25'].getImageSize())
 
     def test_unallowed_device_pixel_ratio_is_ignored(self):
         self.assertEqual(
-            (300, 160), self.group['cinema__300x160__0.2x'].getImageSize())
+            (300, 160), self.group['cinema__300x160__scale_0.2'].getImageSize())
         self.assertEqual(
-            (300, 160), self.group['cinema__300x160__99999x'].getImageSize())
+            (300, 160), self.group['cinema__300x160__scale_99999'].getImageSize())
 
     def test_scaled_image_get_zoom_from_non_scaled_size(self):
         self.group.variants = {
@@ -229,7 +229,7 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
             'cinema-large': {'zoom': 1.0, 'max_size': '600x320'}
         }
         self.assertEqual(
-            0.3, self.group.get_variant_by_size('cinema__300x160__2x').zoom)
+            0.3, self.group.get_variant_by_size('cinema__300x160__scale_2.0').zoom)
         self.assertEqual(
             0.3, self.group.get_variant_by_size('cinema__300x160').zoom)
         self.assertEqual(
