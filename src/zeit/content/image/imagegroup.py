@@ -116,6 +116,10 @@ class ImageGroupBase(object):
         viewport = self.get_variant_viewport(key)
         scale = self.get_scale(key)
 
+        # Scale image for devices with explicit pixel ratio
+        if scale and size and (0.5 <= scale <= 3.0):
+            size = [int(ceil(x * scale)) for x in size]
+
         # Make sure no invalid or redundant modifiers were provided
         values = [variant.name, size, fill, viewport, scale]
         if len([x for x in values if x]) != len(key.split('__')):
@@ -153,9 +157,6 @@ class ImageGroupBase(object):
                 size = variant.legacy_size
             elif variant.max_width < sys.maxint > variant.max_height:
                 size = [variant.max_width, variant.max_height]
-
-        if scale and size and (0.5 <= scale <= 3.0):
-            size = [int(ceil(x * scale)) for x in size]
 
         # Be defensive about missing meta files, so source could not be
         # recognized as an image (for zeit.web)
