@@ -115,8 +115,9 @@ class ImageGroupBase(object):
         fill = self.get_variant_fill(key)
         viewport = self.get_variant_viewport(key)
         scale = self.get_scale(key)
-
-        # Scale image for devices with explicit pixel ratio
+        # The scale should not influence the variant selection, so we apply it
+        # only _after_ the variant has been selected (otherwise we simply could
+        # pass in a larger size and be done with it ;).
         if scale and size and (0.5 <= scale <= 3.0):
             size = [int(ceil(x * scale)) for x in size]
 
